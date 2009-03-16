@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9S8AJ
 Tags: Avatar, twitter, comments
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 
 Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 
@@ -12,6 +12,14 @@ Let's show the Twitter avatar (Twicon) to your user with those comments of you i
 
 Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 When the Twitter avatar (Twicon) doesn't exist, Gravatar is displayed. 
+
+= Usage =
+The function to add Twicon or Gravatars to your theme is called: get_avatar. The function returns a complete image HTML tag of the Avatar.
+
+The function is called as follows: 
+`<?php echo get_avatar( $id_or_email, $size = '96', $default = '<path_to_url>' ); ?>`
+
+See more. [Using Gravatars](http://codex.wordpress.org/Using_Gravatars "Using Gravatars < WordPress Codex")
 
 == Installation ==
 
