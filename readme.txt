@@ -17,6 +17,7 @@ When the Twitter avatar (Twicon) doesn't exist, Gravatar is displayed.
 The function to add Twicon or Gravatars to your theme is called: get_avatar. The function returns a complete image HTML tag of the Avatar.
 
 The function is called as follows: 
+
 `<?php echo get_avatar( $id_or_email, $size = '96', $default = '<path_to_url>' ); ?>`
 
 See more. [Using Gravatars](http://codex.wordpress.org/Using_Gravatars "Using Gravatars < WordPress Codex")

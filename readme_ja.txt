@@ -17,6 +17,7 @@ Twitter アイコンが見つからない場合は、従来どおり Gravatars を表示します。
 Twicon または Gravatar をテーマに加えるには、get_avatarと呼ばれる関数を利用します。この関数は、アバターの完全なイメージHTMLタグを返します。
 
 この関数は、以下のように呼び出されます： 
+
 `<?php echo get_avatar( $id_or_email, $size = '96', $default = '<path_to_url>' ); ?>`
 
 参照 [Gravatar の使い方](http://wpdocs.sourceforge.jp/Gravatar_%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9 "Gravatar の使い方 - WordPress Codex 日本語版")
