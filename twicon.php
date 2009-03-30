@@ -152,8 +152,8 @@ class twiconController {
 			$avatar      = str_replace("'", '"', $avatar);
 
 			if ( strpos($img_url, 'static.twitter.com') === false ) {
-				$img_url_en  = $this->_utf8_uri_encode($img_url);
-				if ( $img_url != $img_url_en ) {
+				$img_url_en  = trim($this->_utf8_uri_encode($img_url));
+				if ( !empty($img_url_en) && $img_url != $img_url_en ) {
 					$img_url = str_replace('_bigger', '', $img_url_en);
 				} elseif ( defined('TWICON_CACHE') && TWICON_CACHE ) {
 					$cache_file_name = $this->_cache_file_name($img_url, $size);
@@ -442,7 +442,7 @@ class twiconController {
 	function _unhtmlentities($string){
 		$encoding = strtolower(mb_detect_encoding($string));
 		if (!preg_match("/^utf/", $encoding) and $encoding != 'ascii')
-			return '';
+			return $string;
 
 		$excluded_hex = $string;
 		if (preg_match("/&#[xX][0-9a-zA-Z]{2,8};/", $string))
