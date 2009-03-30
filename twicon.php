@@ -4,7 +4,7 @@ Plugin Name: Twicon for WordPress
 Plugin URI: http://wppluginsj.sourceforge.jp/twicon/
 Description: Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 Author: wokamoto
-Version: 1.2.4
+Version: 1.2.5
 Author URI: http://dogmap.jp/
 
 License:
@@ -48,7 +48,6 @@ function set_profile_image_url($profile_image_url, $id_or_email = '') {
 }
 add_filter('profile_image_url/twicon.php', 'set_profile_image_url', 10, 2);
  *****************************************************************************/
-
 
 /******************************************************************************
  * define
@@ -146,27 +145,30 @@ class twiconController {
 		if( isset($result['profile_image_url']) && $result['profile_image_url'] !== false && !empty($result['profile_image_url']) ) {
 			$safe_alt = ( false === $alt ? '': attribute_escape( $alt ));
 
-			$image       = $result['profile_image_url'];
+			$img_url     = $this->_unhtmlentities($result['profile_image_url']);
 			$expired     = $result['expiration_date'];
 			$name        = (isset($result['name']) ? $result['name'] : '');
 			$twitter_url = (isset($result['twitter_url']) ? $result['twitter_url'] : '');
 			$avatar      = str_replace("'", '"', $avatar);
 
-			if ( strpos($image, 'static.twitter.com') === false ) {
-				if ( defined('TWICON_CACHE') && TWICON_CACHE ) {
-					$cache_file_name = $this->_cache_file_name($image, $size);
+			if ( strpos($img_url, 'static.twitter.com') === false ) {
+				$img_url_en  = $this->_utf8_uri_encode($img_url);
+				if ( $img_url != $img_url_en ) {
+					$img_url = str_replace('_bigger', '', $img_url_en);
+				} elseif ( defined('TWICON_CACHE') && TWICON_CACHE ) {
+					$cache_file_name = $this->_cache_file_name($img_url, $size);
 					if ( $this->_cache_file_exists($this->_cache_path . $cache_file_name, $expired) )
-						$image = $this->_cache_url . $cache_file_name;
+						$img_url = $this->_cache_url . $cache_file_name;
 					else
-						$image = $this->pluginsUrl(
+						$img_url = $this->pluginsUrl(
 							  '/' . basename(dirname(__FILE__))
 							. '/' . basename(__FILE__)
-							. '?url=' . base64_encode($image)
+							. '?url=' . base64_encode($img_url)
 							. '&amp;size=' . $size
 							);
 				}
 
-				$avatar = preg_replace('/^(<img.*src=[\'"])[^\'"]*([\'"].*\/>)$/i', '$1'.$image.'$2', $avatar);
+				$avatar = preg_replace('/^(<img.*src=[\'"])[^\'"]*([\'"].*\/>)$/i', '$1' . $img_url . '$2', $avatar);
 				if (!empty($name))
 					$avatar = preg_replace('/^(<img.*alt=[\'"])[^\'"]*([\'"].*\/>)$/i', '$1'.$name.'$2', $avatar);
 			}
@@ -377,20 +379,21 @@ class twiconController {
 
 		}
 
-		$size = (int) ( is_numeric($size) ? $size : '96' );
-		if ( defined('TWICON_CACHE') && TWICON_CACHE ) {
-			$suffix = '_bigger';
-		} else {
-			if ($size <= 24)
-				$suffix = '_mini';
-			elseif ($size <= 48)
-				$suffix = '_normal';
-			else
-				$suffix = '_bigger';
-		}
 		if ( strpos($profile_image_url, 'static.twitter.com') === false ) {
-			if ( preg_match('/^(https?:\/\/.*)(_[^\/\._]*)(\.(jpe?g|gif|png))$/i', $profile_image_url, $matches) )
+			if ( preg_match('/^(https?:\/\/.*)(_[^\/\._]*)(\.(jpe?g|gif|png))$/i', $profile_image_url, $matches) ) {
+				$size = (int) ( is_numeric($size) ? $size : '96' );
+				if ( defined('TWICON_CACHE') && TWICON_CACHE ) {
+					$suffix = '_bigger';
+				} else {
+					if ($size <= 24)
+						$suffix = '_mini';
+					elseif ($size <= 48)
+						$suffix = '_normal';
+					else
+						$suffix = '_bigger';
+				}
 				$profile_image_url = $matches[1] . $suffix . $matches[3];
+			}
 			unset($matches);
 		}
 
@@ -434,6 +437,61 @@ class twiconController {
 		@imagepng($img_resized, $cache_file);
 
 		return $img_resized;
+	}
+
+	function _unhtmlentities($string){
+		$encoding = strtolower(mb_detect_encoding($string));
+		if (!preg_match("/^utf/", $encoding) and $encoding != 'ascii')
+			return '';
+
+		$excluded_hex = $string;
+		if (preg_match("/&#[xX][0-9a-zA-Z]{2,8};/", $string))
+			$excluded_hex = preg_replace("/&#[xX]([0-9a-zA-Z]{2,8});/e", "'&#'.hexdec('$1').';'", $string);
+
+		return mb_decode_numericentity($excluded_hex, array(0x0, 0x10000, 0, 0xfffff), "utf-8");
+	}
+
+	// ==================================================
+	// based on utf8_uri_encode() at formatting.php from WordPress 2.7.1
+	function _utf8_uri_encode( $utf8_string, $length = 0 ) {
+		$unicode = '';
+		$values = array();
+		$num_octets = 1;
+		$unicode_length = 0;
+
+		$string_length = strlen( $utf8_string );
+		for ($i = 0; $i < $string_length; $i++ ) {
+
+			$value = ord( $utf8_string[ $i ] );
+
+			if ( $value < 128 ) {
+				if ( $length && ( $unicode_length >= $length ) )
+					break;
+				$unicode .= chr($value);
+				$unicode_length++;
+			} else {
+				if ( count( $values ) == 0 ) $num_octets = ( $value < 224 ) ? 2 : 3;
+
+				$values[] = $value;
+
+				if ( $length && ( $unicode_length + ($num_octets * 3) ) > $length )
+					break;
+				if ( count( $values ) == $num_octets ) {
+					if ($num_octets == 3) {
+						$unicode .= '%' . dechex($values[0]) . '%' . dechex($values[1]) . '%' . dechex($values[2]);
+						$unicode_length += 9;
+					} else {
+						$unicode .= '%' . dechex($values[0]) . '%' . dechex($values[1]);
+						$unicode_length += 6;
+					}
+
+					$values = array();
+					$num_octets = 1;
+				}
+			}
+		}
+
+		return $unicode;
 	}
 }
 
