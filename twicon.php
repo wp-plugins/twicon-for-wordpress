@@ -117,7 +117,7 @@ class twiconController {
 		return trailingslashit(trailingslashit(!defined('WP_CONTENT_DIR')
 			? WP_CONTENT_DIR
 			: trailingslashit(ABSPATH) . 'wp-content'
-			) . $path);
+			) . preg_replace('/^\//', '', $path));
 	}
 
 	// contentUrl
@@ -125,17 +125,17 @@ class twiconController {
 		return trailingslashit(trailingslashit(!defined('WP_CONTENT_URL')
 			? WP_CONTENT_URL
 			: trailingslashit(get_option('siteurl')) . 'wp-content'
-			) . $path);
+			) . preg_replace('/^\//', '', $path));
 	}
 
 	// pluginsDir
 	function pluginsDir($path = '') {
-		return trailingslashit($this->contentDir( 'plugins/' . $path ));
+		return trailingslashit($this->contentDir( 'plugins/' . preg_replace('/^\//', '', $path) ));
 	}
 
 	// pluginsUrl
 	function pluginsUrl($path = '') {
-		return trailingslashit($this->contentUrl( 'plugins/' . $path ));
+		return trailingslashit($this->contentUrl( 'plugins/' . preg_replace('/^\//', '', $path) ));
 	}
 
 	// Function updateAvatars
@@ -170,7 +170,7 @@ class twiconController {
 						$img_url = $this->_cache_url . $cache_file_name;
 					else
 						$img_url = $this->pluginsUrl(
-							  '/' . basename(dirname(__FILE__)))
+							  basename(dirname(__FILE__)))
 							. basename(__FILE__)
 							. '?url=' . base64_encode($img_url)
 							. '&amp;size=' . $size;
