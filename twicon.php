@@ -170,11 +170,10 @@ class twiconController {
 						$img_url = $this->_cache_url . $cache_file_name;
 					else
 						$img_url = $this->pluginsUrl(
-							  '/' . basename(dirname(__FILE__))
-							. '/' . basename(__FILE__)
+							  '/' . basename(dirname(__FILE__)))
+							. basename(__FILE__)
 							. '?url=' . base64_encode($img_url)
-							. '&amp;size=' . $size
-							);
+							. '&amp;size=' . $size;
 				}
 
 				$avatar = preg_replace('/^(<img.*src=[\'"])[^\'"]*([\'"].*\/>)$/i', '$1' . $img_url . '$2', $avatar);
