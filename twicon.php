@@ -4,7 +4,7 @@ Plugin Name: Twicon for WordPress
 Plugin URI: http://wppluginsj.sourceforge.jp/twicon/
 Description: Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 Author: wokamoto
-Version: 1.2.6
+Version: 1.2.7
 Author URI: http://dogmap.jp/
 
 License:
@@ -52,11 +52,14 @@ add_filter('profile_image_url/twicon.php', 'set_profile_image_url', 10, 2);
 /******************************************************************************
  * define
  *****************************************************************************/
+define('TWICON_LINK_TWITTER', false);		// Twicon link Twitter (true or false)
 define('TWICON_EXPIRED', 12);			// Request cache expired (hours)
 define('TWICON_CACHE', true);			// Icon File Cache (true or false)
 define('TWICON_CACHE_DIR', 'cache/twicon');	// Icon File Cache Directory
-define('TWICON_LINK_TWITTER', false);		// Twicon link Twitter (true or false)
 
+define('TWICON_STATUS', 'http://twitter.com/users/show/');
+define('TWICON_HOST',   's3.amazonaws.com');
+define('TWICON_STATIC', 'static.twitter.com');
 
 /******************************************************************************
  * Require wp-load.php or wp-config.php
@@ -160,7 +163,7 @@ class twiconController {
 			$twitter_url = (isset($result['twitter_url']) ? $result['twitter_url'] : '');
 			$avatar      = str_replace("'", '"', $avatar);
 
-			if ( strpos($img_url, 'static.twitter.com') === false ) {
+			if ( strpos($img_url, TWICON_STATIC) === false ) {
 				if ( $this->cache ) {
 					$cache_file_name = $this->_cache_file_name($img_url, $size);
 					if ( $this->_cache_file_exists($this->_cache_path . $cache_file_name, $expired) )
@@ -303,10 +306,10 @@ class twiconController {
 		$twitter_id = $this->_get_twitter_id($post_id, $comment_id, $email);
 		if ( $twitter_id === false ) {
 			$id = $email;
-			$request = 'http://twitter.com/users/show/show.xml?email='.urlencode($id);
+			$request = TWICON_STATUS . 'show.xml?email=' . urlencode($id);
 		} else {
 			$id = $twitter_id;
-			$request = 'http://twitter.com/users/show/'.$id.'.xml';
+			$request = TWICON_STATUS . $id . '.xml';
 		}
 
 		if (!empty($id))
@@ -381,34 +384,36 @@ class twiconController {
 			}
 
 			$this->_option_update = true;
-
-
 		}
 
-		if ( strpos($profile_image_url, 'static.twitter.com') === false ) {
-			if ( preg_match('/^(https?:\/\/.*)(_[^\/\._]*)(\.(jpe?g|gif|png))$/i', $profile_image_url, $matches) ) {
-				$size = (int) ( is_numeric($size) ? $size : '96' );
-				if ( $this->cache ) {
-					$suffix = $this->_suffix['big'];
-				} else {
+		if ( strpos($profile_image_url, TWICON_HOST) === false )
+			$profile_image_url = false;
+
+		if ( $profile_image_url !== false ) {
+			if ( strpos($profile_image_url, TWICON_STATIC) === false ) {
+				if ( preg_match('/^(https?:\/\/.*)(_[^\/\._]*)(\.(jpe?g|gif|png))$/i', $profile_image_url, $matches) ) {
+					$size = (int) ( is_numeric($size) ? $size : '96' );
 					if ($size <= 24)
 						$suffix = $this->_suffix['mini'];
 					elseif ($size <= 48)
 						$suffix = $this->_suffix['normal'];
 					else
 						$suffix = $this->_suffix['big'];
+					$profile_image_url = $matches[1] . $suffix . $matches[3];
 				}
-				$profile_image_url = $matches[1] . $suffix . $matches[3];
+				unset($matches);
+				$profile_image_url = str_replace('https://' . TWICON_HOST .'/', 'http://' . TWICON_HOST . '/', $profile_image_url);
+
+				// Icon Image URL percent encoding
+				$image_url_encode  = trim($this->_utf8_uri_encode($profile_image_url));
+				if ( !empty($image_url_encode) && $profile_image_url != $image_url_encode )
+					$profile_image_url = str_replace(array($this->_suffix['mini'], $this->_suffix['normal'], $this->_suffix['big']), '', $image_url_encode);
+			} else {
+				$profile_image_url = false;
 			}
-			unset($matches);
 		}
 
-		// Icon Image URL percent encoding
-		$image_url_encode  = trim($this->_utf8_uri_encode($profile_image_url));
-		if ( !empty($image_url_encode) && $profile_image_url != $image_url_encode )
-			$profile_image_url = str_replace(array($this->_suffix['mini'], $this->_suffix['normal'], $this->_suffix['big']), '', $image_url_encode);
-
-		$profile_image_url = apply_filters('profile_image_url/twicon.php', $profile_image_url, $id);
+		$profile_image_url = apply_filters('profile_image_url/twicon.php', $profile_image_url, $id, $size);
 
 		$result = compact('profile_image_url', 'expiration_date', 'name', 'twitter_url');
 		$this->_avatars[$id] = $result;
