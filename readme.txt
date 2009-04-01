@@ -24,7 +24,7 @@ See more. [Using Gravatars](http://codex.wordpress.org/Using_Gravatars "Using Gr
 
 == Installation ==
 
-1. Upload the entire `twicon` folder to the `/wp-content/plugins/` directory.
+1. Upload the entire `twicon-for-wordpress` folder to the `/wp-content/plugins/` directory.
 2. Please make directory `twicon` under the `/wp-content/cache/` directory.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
 

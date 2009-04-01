@@ -24,7 +24,7 @@ Twicon ‚Ü‚½‚Í Gravatar ‚ğƒe[ƒ}‚É‰Á‚¦‚é‚É‚ÍAget_avatar‚ÆŒÄ‚Î‚ê‚éŠÖ”‚ğ—˜—p‚µ‚Ü‚
 
 == Installation ==
 
-1. `/wp-content/plugins/` ƒfƒBƒŒƒNƒgƒŠ‚É `twicon` ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µA‚»‚Ì’†‚Éƒvƒ‰ƒOƒCƒ“ƒtƒ@ƒCƒ‹‚ğŠi”[‚µ‚Ä‚­‚¾‚³‚¢B
+1. `/wp-content/plugins/` ƒfƒBƒŒƒNƒgƒŠ‚É `twicon-for-wordpress` ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µA‚»‚Ì’†‚Éƒvƒ‰ƒOƒCƒ“ƒtƒ@ƒCƒ‹‚ğŠi”[‚µ‚Ä‚­‚¾‚³‚¢B
 @ˆê”Ê“I‚É‚Í .zip ‚©‚ç“WŠJ‚³‚ê‚½ twicon ƒtƒHƒ‹ƒ_‚ğ‚»‚Ì‚Ü‚ÜƒAƒbƒvƒ[ƒh‚·‚ê‚Î OK ‚Å‚·B
 2. `/wp-content/` ƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚É `cache/twicon` ‚Æ‚¢‚¤ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µA‘‚«‚İŒ ŒÀ‚ğ—^‚¦‚Ä‚­‚¾‚³‚¢B
 3. WordPress ‚Ì "ƒvƒ‰ƒOƒCƒ“" ƒƒjƒ…[‚©‚ç "Twicon for WordPress" ‚ğ—LŒø‰»‚µ‚Ä‚­‚¾‚³‚¢B
