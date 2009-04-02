@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9S8AJ
 Tags: Avatar, twitter, comments
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 1.2.7
+Stable tag: 1.2.8
 
 コメントしてくれた人のメールアドレスから Twitter アイコン (Twicon) を表示します。
 

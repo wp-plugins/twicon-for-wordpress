@@ -4,7 +4,7 @@ Plugin Name: Twicon for WordPress
 Plugin URI: http://wppluginsj.sourceforge.jp/twicon/
 Description: Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 Author: wokamoto
-Version: 1.2.7
+Version: 1.2.8
 Author URI: http://dogmap.jp/
 
 License:
@@ -57,7 +57,7 @@ define('TWICON_EXPIRED', 12);			// Request cache expired (hours)
 define('TWICON_CACHE', true);			// Icon File Cache (true or false)
 define('TWICON_CACHE_DIR', 'cache/twicon');	// Icon File Cache Directory
 
-define('TWICON_STATUS', 'http://twitter.com/users/show/');
+define('TWICON_STATUS', 'http://twitter.com/users/');
 define('TWICON_HOST',   's3.amazonaws.com');
 define('TWICON_STATIC', 'static.twitter.com');
 
@@ -308,7 +308,7 @@ class twiconController {
 			$request = TWICON_STATUS . 'show.xml?email=' . urlencode($id);
 		} else {
 			$id = $twitter_id;
-			$request = TWICON_STATUS . $id . '.xml';
+			$request = TWICON_STATUS . 'show/' . $id . '.xml';
 		}
 
 		if (!empty($id))
