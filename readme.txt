@@ -4,7 +4,7 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9S8AJ
 Tags: Avatar, twitter, comments
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 1.2.9
+Stable tag: 1.2.10
 
 Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 

@@ -4,7 +4,7 @@ Plugin Name: Twicon for WordPress
 Plugin URI: http://wppluginsj.sourceforge.jp/twicon/
 Description: Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 Author: wokamoto
-Version: 1.2.9
+Version: 1.2.10
 Author URI: http://dogmap.jp/
 
 License:
@@ -77,6 +77,7 @@ class twiconController {
 	var $cache = '';
 
 	var $_avatars = array();
+	var $_emails = array();
 	var $_meta_value = array();
 	var $_cache_path = '';
 	var $_cache_url = '';
@@ -99,6 +100,7 @@ class twiconController {
 			require_once(ABSPATH . WPINC . '/class-snoopy.php');
 
 		$this->_avatars = get_option('twicon');
+		$this->_emails  = get_option('twicon emails');
 
 		if (defined('TWICON_CACHE') && TWICON_CACHE) {
 			$this->_cache_path = $this->contentDir( TWICON_CACHE_DIR );
@@ -116,6 +118,8 @@ class twiconController {
 	// plugin activation
 	//**************************************************************************************
 	public function activation(){
+		$this->_emails = $this->_get_twicon_emails();
+		update_option('twicon emails', $this->_emails);
 	}
 
 	//**************************************************************************************
@@ -123,6 +127,7 @@ class twiconController {
 	//**************************************************************************************
 	public function deactivation(){
 		delete_option('twicon');
+		delete_option('twicon emails');
 	}
 
 	// contentDir
@@ -317,14 +322,6 @@ class twiconController {
 		$twitter_id = $this->_get_twitter_id($post_id, $comment_id, $email);
 		$id = ($twitter_id !== false ? $twitter_id : '');
 
-//		if ( $twitter_id === false ) {
-//			$id = $email;
-//			$request = TWICON_STATUS . 'show.xml?email=' . urlencode($id);
-//		} else {
-//			$id = $twitter_id;
-//			$request = TWICON_STATUS . 'show/' . $id . '.xml';
-//		}
-
 		if (!empty($id))
 			$result = $this->_get_twitter_status($id, $size);
 
@@ -333,25 +330,67 @@ class twiconController {
 
 	// Function _get_twitter_id
 	function _get_twitter_id($post_id, $comment_id, $email){
-		if ( empty($post_id) || empty($comment_id) || !defined('QC_NOTIFY_TWITTER') ) {
-			$twitter_id = false;
-		} else {
-			if ( !isset($this->_meta_value[$post_id]) )
-				$this->_meta_value[$post_id] = maybe_unserialize(get_post_meta($post_id, QC_NOTIFY_TWITTER, true));
+		$twitter_id = (isset($this->_emails[$email]) ? $this->_emails[$email]['twitter_id'] : false);
 
-			$twitter_id = false;
-			if ( is_array($this->_meta_value[$post_id]) ) {
-				foreach ($this->_meta_value[$post_id] as $key => $val) {
-					if (!empty($key) && in_array($comment_id, $val, false)) {
-						$twitter_id = $key;
-						break;
+		if ( $twitter_id === false ) {
+			if ( empty($post_id) || empty($comment_id) || !defined('QC_NOTIFY_TWITTER') ) {
+				$twitter_id = false;
+			} else {
+				if ( !isset($this->_meta_value[$post_id]) )
+					$this->_meta_value[$post_id] = maybe_unserialize(get_post_meta($post_id, QC_NOTIFY_TWITTER, true));
+
+				$twitter_id = false;
+				if ( is_array($this->_meta_value[$post_id]) ) {
+					foreach ($this->_meta_value[$post_id] as $key => $val) {
+						if (!empty($key) && in_array($comment_id, $val, false)) {
+							$twitter_id = $key;
+							break;
+						}
 					}
+					unset($val);
 				}
-				unset($val);
 			}
 		}
 
 		return apply_filters('twitter_id/twicon.php', $twitter_id, $email);
+	}
+
+	// Function _get_twicon_emails
+	function _get_twicon_emails() {
+		global $wpdb;
+
+		$meta_list = $wpdb->get_results(
+			"SELECT post_id, meta_key, meta_value"
+			. " FROM {$wpdb->postmeta}"
+			. " WHERE meta_key = '_qc_notify_twitter'"
+			. " ORDER BY post_id"
+			, ARRAY_A);
+		$twicon_emails = array();
+
+		foreach ( (array) $meta_list as $metarow) {
+			$mpid = (int) $metarow['post_id'];
+			$mkey = $metarow['meta_key'];
+			$mval = maybe_unserialize(maybe_unserialize($metarow['meta_value']));
+			if ( is_array($mval) ) {
+				foreach ($mval as $key => $comments) {
+					if ( !empty($key) ) {
+						foreach ($comments as $cid) {
+							$comment = get_comment($cid);
+							$twicon_emails[$comment->comment_author_email] = array(
+								 'twitter_id' => $key
+								,'author' => $comment->comment_author
+								,'url' => $comment->comment_author_url
+								);
+						}
+					}
+				}
+				unset($comments);
+				unset($mval);
+			}
+		}
+		unset($meta_list);
+
+		return $twicon_emails;
 	}
 
 	// Function _get_twitter_status
