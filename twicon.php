@@ -4,7 +4,7 @@ Plugin Name: Twicon for WordPress
 Plugin URI: http://wppluginsj.sourceforge.jp/twicon/
 Description: Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 Author: wokamoto
-Version: 1.2.8
+Version: 1.2.9
 Author URI: http://dogmap.jp/
 
 License:
@@ -110,6 +110,19 @@ class twiconController {
 				@mkdir( $this->_cache_path, $mode );
 			$this->cache = file_exists($this->_cache_path);
 		}
+	}
+
+	//**************************************************************************************
+	// plugin activation
+	//**************************************************************************************
+	public function activation(){
+	}
+
+	//**************************************************************************************
+	// plugin deactivation
+	//**************************************************************************************
+	public function deactivation(){
+		delete_option('twicon');
 	}
 
 	// contentDir
@@ -301,18 +314,19 @@ class twiconController {
 		if (empty($email))
 			return $result;
 
-		$id = '';
 		$twitter_id = $this->_get_twitter_id($post_id, $comment_id, $email);
-		if ( $twitter_id === false ) {
-			$id = $email;
-			$request = TWICON_STATUS . 'show.xml?email=' . urlencode($id);
-		} else {
-			$id = $twitter_id;
-			$request = TWICON_STATUS . 'show/' . $id . '.xml';
-		}
+		$id = ($twitter_id !== false ? $twitter_id : '');
+
+//		if ( $twitter_id === false ) {
+//			$id = $email;
+//			$request = TWICON_STATUS . 'show.xml?email=' . urlencode($id);
+//		} else {
+//			$id = $twitter_id;
+//			$request = TWICON_STATUS . 'show/' . $id . '.xml';
+//		}
 
 		if (!empty($id))
-			$result = $this->_get_twitter_status($id, $request, $size);
+			$result = $this->_get_twitter_status($id, $size);
 
 		return $result;
 	}
@@ -341,48 +355,55 @@ class twiconController {
 	}
 
 	// Function _get_twitter_status
-	function _get_twitter_status($id, $url, $size = '96'){
+	function _get_twitter_status($id = '', $size = '96', $request_url = ''){
 		$profile_image_url = false;
 		$expiration_date   = $this->_expiration_date();
 		$name              = '';
+		$screen_name       = '';
 		$twitter_url       = '';
 
-		if ( isset($this->_avatars[$id]) && isset($this->_avatars[$id]['expiration_date']) && time() < $this->_avatars[$id]['expiration_date'] ) {
-			$profile_image_url = $this->_unhtmlentities(isset($this->_avatars[$id]['profile_image_url']) ? $this->_avatars[$id]['profile_image_url'] : '');
-			$expiration_date   = $this->_avatars[$id]['expiration_date'];
-			$name              = (isset($this->_avatars[$id]['name']) ? $this->_avatars[$id]['name'] : '');
-			$twitter_url       = (isset($this->_avatars[$id]['twitter_url']) ? $this->_avatars[$id]['twitter_url'] : '');
+		if ( !empty($id) ) {
+			if ( isset($this->_avatars[$id]) && isset($this->_avatars[$id]['expiration_date']) && time() < $this->_avatars[$id]['expiration_date'] ) {
+				$profile_image_url = $this->_unhtmlentities(isset($this->_avatars[$id]['profile_image_url']) ? $this->_avatars[$id]['profile_image_url'] : '');
+				$expiration_date   = $this->_avatars[$id]['expiration_date'];
+				$name              = (isset($this->_avatars[$id]['name']) ? $this->_avatars[$id]['name'] : '');
+				$twitter_url       = (isset($this->_avatars[$id]['twitter_url']) ? $this->_avatars[$id]['twitter_url'] : '');
 
-		} else {
-			$snoopy = new Snoopy;
-			$snoopy->read_timeout = 30;
-			$snoopy->timed_out = true;
-			$snoopy->submit($url);
-			$response = $snoopy->results;
-			$http_code = $snoopy->response_code;
-			unset($snoopy);
+			} else {
+				if (empty($request_url))
+					$request_url = TWICON_STATUS . 'show/' . $id . '.xml';
 
-			if(strpos($http_code, '200') !== FALSE) {
-				if (preg_match_all('/<(name|screen_name|profile_image_url)>([^<]*)<\/(name|screen_name|profile_image_url)>/i', $response, $matches, PREG_SET_ORDER)) {
-					foreach ((array) $matches as $match) {
-						switch (strtolower($match[1])) {
-						case 'name':
-							$name = $match[2];
-							break;
-						case 'screen_name':
-							$twitter_url = 'http://twitter.com/' . $match[2];
-							break;
-						case 'profile_image_url':
-							$profile_image_url = $match[2];
-							break;
+				$snoopy = new Snoopy;
+				$snoopy->read_timeout = 30;
+				$snoopy->timed_out = true;
+				$snoopy->submit($request_url);
+				$response = $snoopy->results;
+				$http_code = $snoopy->response_code;
+				unset($snoopy);
+
+				if(strpos($http_code, '200') !== FALSE) {
+					if (preg_match_all('/<(name|screen_name|profile_image_url)>([^<]*)<\/(name|screen_name|profile_image_url)>/i', $response, $matches, PREG_SET_ORDER)) {
+						foreach ((array) $matches as $match) {
+							switch (strtolower($match[1])) {
+							case 'name':
+								$name = $match[2];
+								break;
+							case 'screen_name':
+								$screen_name = $match[2];
+								$twitter_url = 'http://twitter.com/' . $screen_name;
+								break;
+							case 'profile_image_url':
+								$profile_image_url = $match[2];
+								break;
+							}
 						}
+						unset($match);
 					}
-					unset($match);
+					unset($matches);
 				}
-				unset($matches);
-			}
 
-			$this->_option_update = true;
+				$this->_option_update = true;
+			}
 		}
 
 		if ( strpos($profile_image_url, TWICON_HOST) === false )
@@ -415,7 +436,7 @@ class twiconController {
 		$profile_image_url = apply_filters('profile_image_url/twicon.php', $profile_image_url, $id, $size);
 
 		$result = compact('profile_image_url', 'expiration_date', 'name', 'twitter_url');
-		$this->_avatars[$id] = $result;
+		if ( !empty($id) ) $this->_avatars[$id] = $result;
 
 		return $result;
 	}
@@ -524,6 +545,11 @@ if ( strpos($_SERVER['PHP_SELF'], basename(__FILE__)) === false ) {
 	// Add WordPress Filter
 	add_filter('get_avatar', array(&$twicon, 'getAvatar'), 10, 5);
 	add_action('shutdown',   array(&$twicon, 'updateAvatars'));
+
+	if (function_exists('register_activation_hook'))
+		register_activation_hook(__FILE__, array(&$twicon, 'activation'));
+	if (function_exists('register_deactivation_hook'))
+		register_deactivation_hook(__FILE__, array(&$twicon, 'deactivation'));
 
 } elseif ( $twicon->cache && isset($_GET['url']) ) {
 	// Get Image from Cache
