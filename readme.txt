@@ -9,6 +9,8 @@ Stable tag: 1.2.9
 Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 
 == Description ==
+<strong> As of now, <em>the plugin currently cannot work</em> anymore.
+Please see [Twitter Issue 353](http://code.google.com/p/twitter-api/issues/detail?id=353 "Twitter Issue 353") and [411](http://code.google.com/p/twitter-api/issues/detail?id=411 "Twitter Issue 411"). Thank you very much for your help.</strong>
 
 Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 When the Twitter avatar (Twicon) doesn't exist, Gravatar is displayed. 
