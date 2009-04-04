@@ -117,7 +117,7 @@ class twiconController {
 	//**************************************************************************************
 	// plugin activation
 	//**************************************************************************************
-	public function activation(){
+	function activation(){
 		$this->_emails = $this->_get_twicon_emails();
 		update_option('twicon emails', $this->_emails);
 	}
@@ -125,7 +125,7 @@ class twiconController {
 	//**************************************************************************************
 	// plugin deactivation
 	//**************************************************************************************
-	public function deactivation(){
+	function deactivation(){
 		delete_option('twicon');
 		delete_option('twicon emails');
 	}
