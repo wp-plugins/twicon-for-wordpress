@@ -1,0 +1,46 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: twicon\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2009-04-09 11:32+0900\n"
+"PO-Revision-Date: 2009-04-09 11:38+0900\n"
+"Last-Translator: wokamoto <wokamoto1973@gmail.com>\n"
+"Language-Team: JAPANESE <http://wppluginsj.sourceforge.jp/>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Japanese\n"
+"X-Poedit-Country: JAPAN\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-Basepath: .\n"
+"X-Poedit-SearchPath-0: ..\n"
+
+#: ../twicon.php:984
+#: ../twicon.php:1049
+msgid "Comment Authors Info"
+msgstr "コメント作成者情報"
+
+#: ../twicon.php:1062
+#: ../twicon.php:1074
+msgid "Twitter ID"
+msgstr "Twitter アカウント"
+
+#: ../twicon.php:1063
+#: ../twicon.php:1075
+msgid "Count"
+msgstr "コメント数"
+
+#: ../twicon.php:1064
+#: ../twicon.php:1076
+msgid "Last Comment"
+msgstr "直近のコメント"
+
+#: ../twicon.php:1096
+msgid "Twicon Search"
+msgstr "Twicon 検索"
+
+#: ../twicon.php:1097
+msgid "Deep"
+msgstr "さらに検索"
+

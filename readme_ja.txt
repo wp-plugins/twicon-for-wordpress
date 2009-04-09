@@ -4,13 +4,12 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9S8AJ
 Tags: Avatar, twitter, comments
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 1.2.10
+Stable tag: 1.3.0
 
-ƒRƒƒ“ƒg‚µ‚Ä‚­‚ê‚½l‚Ìƒ[ƒ‹ƒAƒhƒŒƒX‚©‚ç Twitter ƒAƒCƒRƒ“ (Twicon) ‚ğ•\¦‚µ‚Ü‚·B
+ƒRƒƒ“ƒg‚µ‚Ä‚­‚ê‚½l‚ÌTwitterƒAƒJƒEƒ“ƒg‚©‚çTwitterƒAƒCƒRƒ“(Twicon)‚ğ•\¦‚µ‚Ü‚·B
 
 == Description ==
-
-ƒRƒƒ“ƒg‚µ‚Ä‚­‚ê‚½l‚Ìƒ[ƒ‹ƒAƒhƒŒƒX‚©‚ç Twitter ƒAƒCƒRƒ“ (Twicon) ‚ğ•\¦‚µ‚Ü‚·B
+ƒRƒƒ“ƒg‚µ‚Ä‚­‚ê‚½l‚ÌTwitterƒAƒJƒEƒ“ƒg‚©‚çTwitterƒAƒCƒRƒ“(Twicon)‚ğ•\¦‚µ‚Ü‚·B
 Twitter ƒAƒCƒRƒ“‚ªŒ©‚Â‚©‚ç‚È‚¢ê‡‚ÍA]—ˆ‚Ç‚¨‚è Gravatars ‚ğ•\¦‚µ‚Ü‚·B
 
 = Usage =
@@ -28,6 +27,8 @@ Twicon ‚Ü‚½‚Í Gravatar ‚ğƒe[ƒ}‚É‰Á‚¦‚é‚É‚ÍAget_avatar‚ÆŒÄ‚Î‚ê‚éŠÖ”‚ğ—˜—p‚µ‚Ü‚
 @ˆê”Ê“I‚É‚Í .zip ‚©‚ç“WŠJ‚³‚ê‚½ twicon ƒtƒHƒ‹ƒ_‚ğ‚»‚Ì‚Ü‚ÜƒAƒbƒvƒ[ƒh‚·‚ê‚Î OK ‚Å‚·B
 2. `/wp-content/` ƒfƒBƒŒƒNƒgƒŠˆÈ‰º‚É `cache/twicon` ‚Æ‚¢‚¤ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µA‘‚«‚İŒ ŒÀ‚ğ—^‚¦‚Ä‚­‚¾‚³‚¢B
 3. WordPress ‚Ì "ƒvƒ‰ƒOƒCƒ“" ƒƒjƒ…[‚©‚ç "Twicon for WordPress" ‚ğ—LŒø‰»‚µ‚Ä‚­‚¾‚³‚¢B
+4. ƒe[ƒ}‚Ì `comment.php` ‚ÉˆÈ‰º‚Ìƒeƒ“ƒvƒŒ[ƒgƒ^ƒO‚ğ’Ç‰Á‚µ‚Ä‚­‚¾‚³‚¢B
+`<?php if (function_exists('twicon_input_box')) twicon_input_box(); ?>`
 
 == Frequently Asked Questions ==
 

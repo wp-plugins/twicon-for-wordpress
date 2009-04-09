@@ -4,14 +4,11 @@ Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=9S8AJ
 Tags: Avatar, twitter, comments
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 1.2.10
+Stable tag: 1.3.0
 
 Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 
 == Description ==
-<strong> As of now, <em>the plugin currently cannot work</em> anymore.
-Please see [Twitter Issue 353](http://code.google.com/p/twitter-api/issues/detail?id=353 "Twitter Issue 353") and [411](http://code.google.com/p/twitter-api/issues/detail?id=411 "Twitter Issue 411"). Thank you very much for your help.</strong>
-
 Let's show the Twitter avatar (Twicon) to your user with those comments of you in the Web site.
 When the Twitter avatar (Twicon) doesn't exist, Gravatar is displayed. 
 
@@ -29,6 +26,8 @@ See more. [Using Gravatars](http://codex.wordpress.org/Using_Gravatars "Using Gr
 1. Upload the entire `twicon-for-wordpress` folder to the `/wp-content/plugins/` directory.
 2. Please make directory `twicon` under the `/wp-content/cache/` directory.
 3. Activate the plugin through the 'Plugins' menu in WordPress.
+4. Add your `comment.php`.
+`<?php if (function_exists('twicon_input_box')) twicon_input_box(); ?>`
 
 == Frequently Asked Questions ==
 
