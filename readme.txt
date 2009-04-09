@@ -24,10 +24,9 @@ See more. [Using Gravatars](http://codex.wordpress.org/Using_Gravatars "Using Gr
 == Installation ==
 
 1. Upload the entire `twicon-for-wordpress` folder to the `/wp-content/plugins/` directory.
-2. Please make directory `twicon` under the `/wp-content/cache/` directory.
-3. Activate the plugin through the 'Plugins' menu in WordPress.
-4. Add your `comment.php`.
-`<?php if (function_exists('twicon_input_box')) twicon_input_box(); ?>`
+1. Please make directory `twicon` under the `/wp-content/cache/` directory.
+1. Activate the plugin through the 'Plugins' menu in WordPress.
+1. Add your 'comment.php'. `<?php if (function_exists('twicon_input_box')) twicon_input_box(); ?>`
 
 == Frequently Asked Questions ==
 
