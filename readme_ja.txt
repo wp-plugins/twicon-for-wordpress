@@ -21,6 +21,12 @@ Twicon ‚Ü‚½‚Í Gravatar ‚ğƒe[ƒ}‚É‰Á‚¦‚é‚É‚ÍAget_avatar‚ÆŒÄ‚Î‚ê‚éŠÖ”‚ğ—˜—p‚µ‚Ü‚
 
 QÆ [Gravatar ‚Ìg‚¢•û](http://wpdocs.sourceforge.jp/Gravatar_%E3%81%AE%E4%BD%BF%E3%81%84%E6%96%B9 "Gravatar ‚Ìg‚¢•û - WordPress Codex “ú–{Œê”Å")
 
+= Localization =
+"Twicon for WordPress" ‚ğŠe‘Œê‚É–|–ó‚µ‚Ä‚­‚¾‚³‚Á‚½•ûX‚ÉŠ´Ó‚ğ‚ß‚ÄB
+
+* Belorussian (by) - <a href="http://www.fatcow.com" title="Marcis Gasuns" rel="nofollow">Marcis Gasuns</a>
+* Japanese (ja) - <a href="http://dogmap.jp/" title="Wataru OKAMOTO">Wataru OKAMOTO</a> (plugin author)
+
 == Installation ==
 
 1. `/wp-content/plugins/` ƒfƒBƒŒƒNƒgƒŠ‚É `twicon-for-wordpress` ƒfƒBƒŒƒNƒgƒŠ‚ğì¬‚µA‚»‚Ì’†‚Éƒvƒ‰ƒOƒCƒ“ƒtƒ@ƒCƒ‹‚ğŠi”[‚µ‚Ä‚­‚¾‚³‚¢B
