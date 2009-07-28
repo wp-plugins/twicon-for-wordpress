@@ -21,6 +21,15 @@ The function is called as follows:
 
 See more. [Using Gravatars](http://codex.wordpress.org/Using_Gravatars "Using Gravatars < WordPress Codex")
 
+= Localization =
+"Twicon for WordPress" has been translated into languages. Our thanks and appreciation must go to the following for their contributions:
+
+* Belorussian (by) - <a href="http://www.fatcow.com" title="Marcis Gasuns">Marcis Gasuns</a>
+* Japanese (ja) - <a href="http://dogmap.jp/" title="Wataru OKAMOTO">Wataru OKAMOTO</a> (plugin author)
+* Spanish (es_ES) - <a href="http://tolingo.com/" title="tolingo.com - Franz Hartmann">Franz Hartmann</a>
+
+If you have translated into your language, please let me know.
+
 == Installation ==
 
 1. Upload the entire `twicon-for-wordpress` folder to the `/wp-content/plugins/` directory.
