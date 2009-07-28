@@ -24,8 +24,9 @@ Twicon ‚Ü‚½‚Í Gravatar ‚ğƒe[ƒ}‚É‰Á‚¦‚é‚É‚ÍAget_avatar‚ÆŒÄ‚Î‚ê‚éŠÖ”‚ğ—˜—p‚µ‚Ü‚
 = Localization =
 "Twicon for WordPress" ‚ğŠe‘Œê‚É–|–ó‚µ‚Ä‚­‚¾‚³‚Á‚½•ûX‚ÉŠ´Ó‚ğ‚ß‚ÄB
 
-* Belorussian (by) - <a href="http://www.fatcow.com" title="Marcis Gasuns" rel="nofollow">Marcis Gasuns</a>
+* Belorussian (by) - <a href="http://www.fatcow.com" title="Marcis Gasuns">Marcis Gasuns</a>
 * Japanese (ja) - <a href="http://dogmap.jp/" title="Wataru OKAMOTO">Wataru OKAMOTO</a> (plugin author)
+* Spanish (es_ES) - <a href="http://tolingo.com/" title="tolingo.com - Franz Hartmann">Franz Hartmann</a>
 
 == Installation ==
 
