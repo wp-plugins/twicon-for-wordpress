@@ -24,7 +24,7 @@ See more. [Using Gravatars](http://codex.wordpress.org/Using_Gravatars "Using Gr
 = Localization =
 "Twicon for WordPress" has been translated into languages. Our thanks and appreciation must go to the following for their contributions:
 
-* Belorussian (by) - <a href="http://www.fatcow.com" title="Marcis Gasuns">Marcis Gasuns</a>
+* Belorussian (by) - Marcis Gasuns
 * Japanese (ja) - <a href="http://dogmap.jp/" title="Wataru OKAMOTO">Wataru OKAMOTO</a> (plugin author)
 * Spanish (es_ES) - <a href="http://tolingo.com/" title="tolingo.com - Franz Hartmann">Franz Hartmann</a>
 
